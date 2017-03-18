@@ -33,6 +33,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataRowHelper.cs" />
     <Compile Include="Attribute\StringRangeAttribute.cs" />
+    <Compile Include="DataRowConfiguration.cs" />
+    <Compile Include="Attribute\StringValueAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Attribute\" />
