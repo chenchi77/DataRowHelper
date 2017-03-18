@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B18ADD14-28E0-4D45-840F-AC45672FB9F2}</ProjectGuid>
+    <ProjectGuid>{C08C3454-B81A-44BE-B507-F94C76E20689}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DataRowHelper</RootNamespace>
-    <AssemblyName>DataRowHelper</AssemblyName>
+    <RootNamespace>DataRowHelperUnitTest</RootNamespace>
+    <AssemblyName>DataRowHelperUnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -28,10 +28,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataRowHelper.cs" />
+    <Compile Include="DataRowHelperTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataRowHelper\DataRowHelper.csproj">
+      <Project>{B18ADD14-28E0-4D45-840F-AC45672FB9F2}</Project>
+      <Name>DataRowHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
