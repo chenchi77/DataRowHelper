@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DataRowHelper;
+using NUnit.Framework;
 
 namespace DataRowHelperUnitTest
 {
@@ -10,5 +11,15 @@ namespace DataRowHelperUnitTest
 		{
 			
 		}
+	}
+
+	public class Profile
+	{
+		[StringRange(1, 2)]
+		public int Id { get; set; }
+		[StringRange(3, 10)]
+		public string Name { get; set; }
+		[StringRange(13, 20)]
+		public string Address { get; set; }
 	}
 }
