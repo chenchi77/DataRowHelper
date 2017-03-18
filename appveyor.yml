@@ -1,0 +1,5 @@
+before_build:
+  - nuget restore
+  
+test_script:
+  - cmd: nunit3-console DataRowHelperUnitTest/DataRowHelperUnitTest.csproj --result=results.xml;format=AppVeyor
