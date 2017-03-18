@@ -2,8 +2,9 @@
 {
 	public class DataRowConfiguration
 	{
-		public string[] Separator { get; set; }
-		public char PadNumber { get; set; }
-		public char PadString { get; set; }
+		public bool HasHeaderRecord { get; set; } = false;
+		public string[] Separator { get; set; } = new string[] { "\r\n" };
+		public char PadNumber { get; set; } = '0';
+		public char PadString { get; set; } = ' ';
 	}
 }

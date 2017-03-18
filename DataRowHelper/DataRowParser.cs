@@ -7,18 +7,13 @@ using System.Reflection;
 
 namespace DataRowHelper
 {
-	public class DataRowHelper
+	public class DataRowParser
 	{
-		private DataRowConfiguration config = new DataRowConfiguration()
-		{
-			Separator = new string[] { "\r\n" },
-			PadNumber = '0',
-			PadString = ' '
-		};
+		private DataRowConfiguration config = new DataRowConfiguration();
 
-		public DataRowHelper() { }
+		public DataRowParser() { }
 
-		public DataRowHelper(DataRowConfiguration config) : this()
+		public DataRowParser(DataRowConfiguration config) : this()
         {
 			this.config = config;
 		}
@@ -28,12 +23,10 @@ namespace DataRowHelper
 			List<T> t = new List<T>();
 			if (string.IsNullOrEmpty(text)) return t;
 			List<string> rows = text.Split(config.Separator, StringSplitOptions.None).ToList();
-			rows.RemoveAt(0);
 
-			if (rows.Last() == string.Empty)
-				rows.RemoveRange(rows.Count - 2, 2);
-			else
-				rows.RemoveAt(rows.Count - 1);
+			if (config.HasHeaderRecord)
+			{
+			}
 
 			foreach (string row in rows)
 			{
