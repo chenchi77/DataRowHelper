@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataRowHelper", "DataRowHelper\DataRowHelper.csproj", "{B18ADD14-28E0-4D45-840F-AC45672FB9F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B18ADD14-28E0-4D45-840F-AC45672FB9F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B18ADD14-28E0-4D45-840F-AC45672FB9F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B18ADD14-28E0-4D45-840F-AC45672FB9F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B18ADD14-28E0-4D45-840F-AC45672FB9F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
