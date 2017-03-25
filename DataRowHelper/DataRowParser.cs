@@ -25,7 +25,7 @@ namespace DataRowHelper
 			_currentData.Add(args.RowData);
 		}
 
-		public IEnumerable<dynamic> ReadLine(Type t)
+		public IEnumerable<object> ReadLine(Type t)
 		{
 			StringBuilder currentLine = new StringBuilder();
 			bool lastCharIsEnd = false;
