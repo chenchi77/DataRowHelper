@@ -1,124 +1,80 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
+using System.IO;
+using System.Text;
 
 namespace DataRowHelper
 {
-	public class DataRowParser
+	public class DataRowParser : IDataRowParser
 	{
-		private DataRowConfiguration config = new DataRowConfiguration();
+		private bool _disposed;
+		private RowReader _reader;
+		private List<dynamic> _currentData = new List<dynamic>();
+		private DataRowConfiguration _config = new DataRowConfiguration();
+		public virtual TextReader TextReader => _reader.Reader;
 
-		public DataRowParser() { }
-
-		public DataRowParser(DataRowConfiguration config) : this()
-        {
-			this.config = config;
+		public DataRowParser(TextReader reader, DataRowConfiguration config)
+		{
+			_reader = new RowReader(reader);
+			_reader.FieldEvent += OnGetField;
+			_config = config;
 		}
 
-		public IEnumerable<T> Reader<T>(string text) where T : new()
+		public void OnGetField(object sender, FieldEventArgs args)
 		{
-			List<T> t = new List<T>();
-			if (string.IsNullOrEmpty(text)) return t;
-			List<string> rows = text.Split(config.Separator, StringSplitOptions.None).ToList();
-
-			if (config.HasHeaderRecord)
-			{
-			}
-
-			foreach (string row in rows)
-			{
-				t.Add(ReaderProperties<T>(row));
-			}
-			return t;
+			_currentData.Add(args.RowData);
 		}
 
-		public IEnumerable<string> Writer<T>(IEnumerable<T> objs)
+		public IEnumerable<dynamic> ReadLine(Type t)
 		{
-			var t = new List<string>();
-			foreach (T obj in objs)
-			{
-				t.Add(WriterProperties(obj));
-			}
-			return t;
-		}
+			StringBuilder currentLine = new StringBuilder();
+			bool lastCharIsEnd = false;
+			int c;
 
-		private T ReaderProperties<T>(string data) where T : new()
-		{
-			T t = new T();
-			PropertyInfo[] props = typeof(T).GetProperties();
-			foreach (PropertyInfo prop in props)
+			while ((c = _reader.GetChar()) != -1)
 			{
-				var att =
-					prop.GetCustomAttribute(typeof(StringRangeAttribute)) as StringRangeAttribute;
-				if (att == null || (att.StartIndex + att.Length) > data.Length)
-					continue;
-
-				string valueStr = data.Substring(att.StartIndex, att.Length).Trim();
-				if (string.IsNullOrEmpty(valueStr))
+				if (lastCharIsEnd || c == '\n')
 				{
-					prop.SetValue(t, null);
+					_reader.GetField(t, currentLine.ToString());
+					currentLine.Length = 0;
+					lastCharIsEnd = false;
+					if (c == '\n') continue;
+				}
+
+				if (c == '\r')
+				{
+					lastCharIsEnd = true;
 					continue;
 				}
-				if (prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(float))
-					valueStr = valueStr.Insert(valueStr.Length - 2, ".");
 
-				if (prop.PropertyType.IsEnum)
-					valueStr = GetEnum(prop.PropertyType, valueStr).ToString();
-
-				TypeConverter typeConverter = TypeDescriptor.GetConverter(prop.PropertyType);
-				var value = typeConverter.ConvertFromString(valueStr);
-				prop.SetValue(t, value);
+				currentLine.Append((char)c);
 			}
 
-			return t;
-		}
-		private string WriterProperties<T>(T obj)
-		{
-			ConcurrentDictionary<int, string> dic = new ConcurrentDictionary<int, string>();
-			PropertyInfo[] props = typeof(T).GetProperties();
-			foreach (PropertyInfo prop in props)
+			if (currentLine.Length > 0)
 			{
-				var att =
-					prop.GetCustomAttribute(typeof(StringRangeAttribute)) as StringRangeAttribute;
-				if (att == null) continue;
-				string value = prop.PropertyType.IsEnum ?
-					GetEnumValue(prop.GetValue(obj)) : prop.GetValue(obj) == null ?
-					string.Empty : prop.GetValue(obj).ToString();
-
-				if (prop.PropertyType == typeof(string) || prop.PropertyType.IsEnum)
-					value = value.PadRight(att.Length, config.PadString);
-				else
-					value = value.Replace(".", string.Empty).PadLeft(att.Length, config.PadNumber);
-				dic.TryAdd(att.StartIndex, value);
+				_reader.GetField(t, currentLine.ToString());
 			}
-			return string.Concat(dic.OrderBy(x => x.Key).Select(x => x.Value).ToArray());
+
+			return _currentData;
 		}
 
-		private object GetEnum(Type type, string value)
+		public void Dispose()
 		{
-			foreach (var field in type.GetFields())
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_disposed) return;
+
+			if (disposing)
 			{
-				var attribute = Attribute.GetCustomAttribute(field,
-					typeof(StringValueAttribute)) as StringValueAttribute;
-				if ((attribute != null && attribute.Value == value) || field.Name == value)
-					return field.GetValue(null);
+				_reader?.Dispose();
+				_currentData = null;
+				_config = null;
 			}
-			return value;
-		}
-
-		private string GetEnumValue(object value)
-		{
-			string str = value.ToString();
-			FieldInfo fieldInfo = value.GetType().GetField(str);
-			var attribute = fieldInfo.GetCustomAttribute(
-				typeof(StringValueAttribute), false) as StringValueAttribute;
-
-			if (attribute != null && attribute.Value.Length > 0)
-				str = attribute.Value;
-			return str;
+			_disposed = true;
 		}
 	}
 }

@@ -35,6 +35,11 @@
     <Compile Include="Attribute\StringRangeAttribute.cs" />
     <Compile Include="DataRowConfiguration.cs" />
     <Compile Include="Attribute\StringValueAttribute.cs" />
+    <Compile Include="IDataRowParser.cs" />
+    <Compile Include="DataRowConvert.cs" />
+    <Compile Include="IDataRowConvert.cs" />
+    <Compile Include="RowReader.cs" />
+    <Compile Include="FieldEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Attribute\" />
