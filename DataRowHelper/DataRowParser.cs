@@ -17,6 +17,7 @@ namespace DataRowHelper
 		public DataRowParser(TextReader reader, DataRowConfiguration config)
 		{
 			_reader = new RowReader(reader);
+			_reader.FieldEvent += OnGetField;
 			//_config = config;
 		}
 
@@ -27,7 +28,6 @@ namespace DataRowHelper
 
 		public IEnumerable<dynamic> ReadLine(Type type)
 		{
-			_reader.FieldEvent += OnGetField;
 			StringBuilder currentLine = new StringBuilder();
 			bool lastCharIsEnd = false;
 			int c;
