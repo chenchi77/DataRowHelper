@@ -16,17 +16,17 @@ namespace DataRowHelper
 		public DataRowParser(TextReader reader, DataRowConfiguration config)
 		{
 			_reader = new RowReader(reader);
-			_reader.FieldEvent += OnGetField;
 			//_config = config;
 		}
 
 		public void OnGetField(object sender, FieldEventArgs args)
 		{
-			_currentData.Add(args.RowData);
+			_currentData.Add(Convert.ChangeType(args.RowData, args.Type));
 		}
 
 		public IEnumerable<T> ReadLine<T>()
 		{
+			_reader.FieldEvent += OnGetField;
 			StringBuilder currentLine = new StringBuilder();
 			bool lastCharIsEnd = false;
 			int c;
