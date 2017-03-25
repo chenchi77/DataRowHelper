@@ -10,14 +10,14 @@ namespace DataRowHelper
 		private bool _disposed;
 		private RowReader _reader;
 		private List<dynamic> _currentData = new List<dynamic>();
-		private DataRowConfiguration _config = new DataRowConfiguration();
+		//private DataRowConfiguration _config = new DataRowConfiguration();
 		public virtual TextReader TextReader => _reader.Reader;
 
 		public DataRowParser(TextReader reader, DataRowConfiguration config)
 		{
 			_reader = new RowReader(reader);
 			_reader.FieldEvent += OnGetField;
-			_config = config;
+			//_config = config;
 		}
 
 		public void OnGetField(object sender, FieldEventArgs args)
@@ -25,7 +25,7 @@ namespace DataRowHelper
 			_currentData.Add(args.RowData);
 		}
 
-		public IEnumerable<object> ReadLine(Type t)
+		public IEnumerable<dynamic> ReadLine(Type t)
 		{
 			StringBuilder currentLine = new StringBuilder();
 			bool lastCharIsEnd = false;
@@ -72,7 +72,6 @@ namespace DataRowHelper
 			{
 				_reader?.Dispose();
 				_currentData = null;
-				_config = null;
 			}
 			_disposed = true;
 		}
