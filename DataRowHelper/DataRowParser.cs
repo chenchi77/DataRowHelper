@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -24,7 +25,7 @@ namespace DataRowHelper
 			_currentData.Add(args.RowData);
 		}
 
-		public IEnumerable<T> ReadLine<T>()
+		public IEnumerable<dynamic> ReadLine(Type type)
 		{
 			_reader.FieldEvent += OnGetField;
 			StringBuilder currentLine = new StringBuilder();
@@ -35,7 +36,7 @@ namespace DataRowHelper
 			{
 				if (lastCharIsEnd || c == '\n')
 				{
-					_reader.GetField(typeof(T), currentLine.ToString());
+					_reader.GetField(type, currentLine.ToString());
 					currentLine.Length = 0;
 					lastCharIsEnd = false;
 					if (c == '\n') continue;
@@ -52,10 +53,10 @@ namespace DataRowHelper
 
 			if (currentLine.Length > 0)
 			{
-				_reader.GetField(typeof(T), currentLine.ToString());
+				_reader.GetField(type, currentLine.ToString());
 			}
 
-			return _currentData as IEnumerable<T>;
+			return _currentData;
 		}
 
 		public void Dispose()

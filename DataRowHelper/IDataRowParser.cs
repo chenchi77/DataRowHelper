@@ -5,6 +5,6 @@ namespace DataRowHelper
 {
 	public interface IDataRowParser : IDisposable
 	{
-		IEnumerable<T> ReadLine<T>();
+		IEnumerable<dynamic> ReadLine(Type type);
 	}
 }
