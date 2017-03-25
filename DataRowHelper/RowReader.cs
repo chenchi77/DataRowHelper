@@ -65,7 +65,7 @@ namespace DataRowHelper
 				prop.SetValue(obj, value);
 			}
 
-			FieldEvent?.Invoke(this, new FieldEventArgs(t, obj));
+			FieldEvent?.Invoke(this, new FieldEventArgs(obj));
 		}
 
 		private object GetEnum(Type type, string value)

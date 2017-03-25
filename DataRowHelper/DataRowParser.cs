@@ -21,7 +21,7 @@ namespace DataRowHelper
 
 		public void OnGetField(object sender, FieldEventArgs args)
 		{
-			_currentData.Add(Convert.ChangeType(args.RowData, args.Type));
+			_currentData.Add(args.RowData);
 		}
 
 		public IEnumerable<T> ReadLine<T>()
@@ -55,7 +55,7 @@ namespace DataRowHelper
 				_reader.GetField(typeof(T), currentLine.ToString());
 			}
 
-			return (IEnumerable<T>)_currentData;
+			return _currentData as IEnumerable<T>;
 		}
 
 		public void Dispose()
