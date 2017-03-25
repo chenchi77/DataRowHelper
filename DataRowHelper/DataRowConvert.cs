@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DataRowHelper
 {
@@ -18,7 +19,7 @@ namespace DataRowHelper
 
 		public IEnumerable<T> GetRecords<T>()
 		{
-			return parser.ReadLine(typeof(T)) as IEnumerable<T>;
+			return parser.ReadLine(typeof(T)).Cast<T>().ToList();
 		}
 
 		public void Dispose()
