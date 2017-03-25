@@ -25,7 +25,7 @@ namespace DataRowHelper
 			_currentData.Add(args.RowData);
 		}
 
-		public IEnumerable<dynamic> ReadLine(Type t)
+		public IEnumerable<T> ReadLine<T>()
 		{
 			StringBuilder currentLine = new StringBuilder();
 			bool lastCharIsEnd = false;
@@ -35,7 +35,7 @@ namespace DataRowHelper
 			{
 				if (lastCharIsEnd || c == '\n')
 				{
-					_reader.GetField(t, currentLine.ToString());
+					_reader.GetField(typeof(T), currentLine.ToString());
 					currentLine.Length = 0;
 					lastCharIsEnd = false;
 					if (c == '\n') continue;
@@ -52,10 +52,10 @@ namespace DataRowHelper
 
 			if (currentLine.Length > 0)
 			{
-				_reader.GetField(t, currentLine.ToString());
+				_reader.GetField(typeof(T), currentLine.ToString());
 			}
 
-			return _currentData;
+			return (IEnumerable<T>)_currentData;
 		}
 
 		public void Dispose()

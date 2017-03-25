@@ -18,9 +18,7 @@ namespace DataRowHelper
 
 		public IEnumerable<T> GetRecords<T>()
 		{
-			Type type = typeof(T);
-			var records = parser.ReadLine(type);
-			return (IEnumerable<T>)records;
+			return parser.ReadLine<T>();
 		}
 
 		public void Dispose()
