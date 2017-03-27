@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using DataRowHelper;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -10,7 +11,7 @@ namespace DataRowHelperUnitTest
 	public class DataRowWriterTest
 	{
 		[Test]
-		public void ReaderTextConvertToGeneralClass()
+		public void WriterTextConvertToGeneralClass()
 		{
 			var data = new List<Profile> {
 				new Profile {
@@ -24,15 +25,18 @@ namespace DataRowHelperUnitTest
 					Address = "Taiwan, Tainan"
 				}
 			};
-			var exp = "01Charlie   Taiwan, Tainan      \n02Charlie   Taiwan, Tainan      \n";
+			var exp = new StringWriter();
+			exp.WriteLine("01Charlie   Taiwan, Tainan      ");
+			exp.WriteLine("02Charlie   Taiwan, Tainan      ");
+
 			var act = new StringWriter();
 			var helper = new DataRowConvert(act);
 			helper.WriteRecods(data);
-			Assert.AreEqual(exp, act.ToString());
+			Assert.AreEqual(exp.ToString(), act.ToString());
 		}
 
 		[Test]
-		public void ReaderTextConvertToEnumClass()
+		public void WriterTextConvertToEnumClass()
 		{
 			var data = new List<MemberProfile> {
 				new MemberProfile {
@@ -48,11 +52,14 @@ namespace DataRowHelperUnitTest
 					MemberType = MemberType.Gold
 				}
 			};
-			var exp = "01Charlie   Taiwan, Tainan      N\n02Charlie   Taiwan, Tainan      G\n";
+			var exp = new StringWriter();
+			exp.WriteLine("01Charlie   Taiwan, Tainan      N");
+			exp.WriteLine("02Charlie   Taiwan, Tainan      G");
+
 			var act = new StringWriter();
 			var helper = new DataRowConvert(act);
 			helper.WriteRecods(data);
-			Assert.AreEqual(exp, act.ToString());
+			Assert.AreEqual(exp.ToString(), act.ToString());
 		}
 	}
 }
