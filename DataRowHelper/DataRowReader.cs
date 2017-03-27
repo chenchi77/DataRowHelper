@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace DataRowHelper
 {
-	public class DataRowParser : IDataRowParser
+	public class DataRowReader : IDataRowReader
 	{
-		private bool _disposed;
-		private RowReader _reader;
-		private List<dynamic> _currentData = new List<dynamic>();
-		//private DataRowConfiguration _config = new DataRowConfiguration();
 		public virtual TextReader TextReader => _reader.Reader;
 
-		public DataRowParser(TextReader reader, DataRowConfiguration config)
+		bool _disposed;
+		RowReader _reader;
+		List<dynamic> _currentData = new List<dynamic>();
+
+		public DataRowReader(TextReader reader, DataRowConfiguration config)
 		{
-			_reader = new RowReader(reader);
+			_reader = new RowReader(reader, config);
 			_reader.FieldEvent += OnGetField;
-			//_config = config;
 		}
 
 		public void OnGetField(object sender, FieldEventArgs args)

@@ -7,6 +7,7 @@ namespace DataRowHelper
 {
 	public class RowReader : IDisposable
 	{
+		public TextReader Reader => _reader;
 		public delegate void FieldHandler(object sender, FieldEventArgs args);
 		public event FieldHandler FieldEvent;
 
@@ -15,13 +16,13 @@ namespace DataRowHelper
 		TextReader _reader;
 		int _charCount;
 		int _currentPosition;
+		//DataRowConfiguration _config = new DataRowConfiguration();
 
-		public TextReader Reader => _reader;
-
-		public RowReader(TextReader reader)
+		public RowReader(TextReader reader, DataRowConfiguration config)
 		{
 			_reader = reader;
 			_buffer = new char[2048];
+			//_config = config;
 		}
 
 		public int GetChar()
@@ -37,10 +38,10 @@ namespace DataRowHelper
 			return _buffer[_currentPosition++];
 		}
 
-		public void GetField(Type t, string line)
+		public void GetField(Type type, string line)
 		{
-			var obj = Activator.CreateInstance(t);
-			PropertyInfo[] props = t.GetProperties();
+			var obj = Activator.CreateInstance(type);
+			PropertyInfo[] props = type.GetProperties();
 			foreach (PropertyInfo prop in props)
 			{
 				var att =
@@ -51,7 +52,7 @@ namespace DataRowHelper
 				string valueStr = line.Substring(att.StartIndex, att.Length).Trim();
 				if (string.IsNullOrEmpty(valueStr))
 				{
-					prop.SetValue(t, null);
+					prop.SetValue(type, null);
 					continue;
 				}
 				if (prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(float))
@@ -68,7 +69,7 @@ namespace DataRowHelper
 			FieldEvent?.Invoke(this, new FieldEventArgs(obj));
 		}
 
-		private object GetEnum(Type type, string value)
+		object GetEnum(Type type, string value)
 		{
 			foreach (var field in type.GetFields())
 			{

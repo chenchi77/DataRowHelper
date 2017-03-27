@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using DataRowHelper;
 using Newtonsoft.Json;
@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace DataRowHelperUnitTest
 {
 	[TestFixture]
-	public class DataRowHelperTest
+	public class DataRowReaderTest
 	{
 		[Test]
 		public void ReaderTextConvertToGeneralClass()
@@ -24,9 +24,9 @@ namespace DataRowHelperUnitTest
 					Address = "Taiwan, Tainan"
 				}
 			};
-			var data = "01Charlie   Taiwan, Tainan      \r\n02Charlie   Taiwan, Tainan      ";
+			var data = "01Charlie   Taiwan, Tainan      \n02Charlie   Taiwan, Tainan      \n";
 			var helper = new DataRowConvert(new StringReader(data));
-			var act = helper.GetRecords<Profile>();
+			var act = helper.ReadRecords<Profile>();
 			Assert.AreEqual(JsonConvert.SerializeObject(exp), JsonConvert.SerializeObject(act));
 		}
 
@@ -47,40 +47,10 @@ namespace DataRowHelperUnitTest
 					MemberType = MemberType.Gold
 				}
 			};
-			var data = "01Charlie   Taiwan, Tainan      N\r\n02Charlie   Taiwan, Tainan      G";
+			var data = "01Charlie   Taiwan, Tainan      N\n02Charlie   Taiwan, Tainan      G\n";
 			var helper = new DataRowConvert(new StringReader(data));
-			var act = helper.GetRecords<MemberProfile>();
+			var act = helper.ReadRecords<MemberProfile>();
 			Assert.AreEqual(JsonConvert.SerializeObject(exp), JsonConvert.SerializeObject(act));
 		}
-	}
-
-	public class Profile
-	{
-		[StringRange(1, 2)]
-		public int Id { get; set; }
-		[StringRange(3, 10)]
-		public string Name { get; set; }
-		[StringRange(13, 20)]
-		public string Address { get; set; }
-	}
-
-	public class MemberProfile
-	{
-		[StringRange(1, 2)]
-		public int Id { get; set; }
-		[StringRange(3, 10)]
-		public string Name { get; set; }
-		[StringRange(13, 20)]
-		public string Address { get; set; }
-		[StringRange(33, 1)]
-		public MemberType MemberType { get; set; }
-	}
-
-	public enum MemberType
-	{
-		[StringValue("N")]
-		General = 0,
-		[StringValue("G")]
-		Gold = 1
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DataRowHelper
 {
-	public interface IDataRowParser : IDisposable
+	public interface IDataRowReader : IDisposable
 	{
 		IEnumerable<dynamic> ReadLine(Type type);
 	}

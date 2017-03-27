@@ -31,15 +31,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataRowParser.cs" />
+    <Compile Include="DataRowReader.cs" />
     <Compile Include="Attribute\StringRangeAttribute.cs" />
     <Compile Include="DataRowConfiguration.cs" />
     <Compile Include="Attribute\StringValueAttribute.cs" />
-    <Compile Include="IDataRowParser.cs" />
+    <Compile Include="IDataRowReader.cs" />
     <Compile Include="DataRowConvert.cs" />
     <Compile Include="IDataRowConvert.cs" />
     <Compile Include="RowReader.cs" />
     <Compile Include="FieldEventArgs.cs" />
+    <Compile Include="RowWriter.cs" />
+    <Compile Include="IDataRowWriter.cs" />
+    <Compile Include="DataRowWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Attribute\" />
