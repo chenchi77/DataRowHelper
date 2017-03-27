@@ -1,5 +1,4 @@
 language: csharp
 solution: DataRowHelper.sln
 script:
-  - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./DataRowHelperUnitTest/bin/Debug/DataRowReaderTest.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./DataRowHelperUnitTest/bin/Debug/DataRowWriterTest.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DataRowHelperUnitTest/bin/Debug/DataRowReaderTest.dll
