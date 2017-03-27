@@ -4,4 +4,5 @@ install:
   - nuget restore DataRowHelper.sln
   - nuget install NUnit.Runners -OutputDirectory testrunner
 script:
+  - xbuild /p:Configuration=Release DataRowHelper.sln
   - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DataRowHelperUnitTest/bin/Debug/DataRowReaderTest.dll
