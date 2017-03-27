@@ -1,7 +1,7 @@
 language: csharp
 solution: DataRowHelper.sln
 install:
-  - nuget restore solution-name.sln
+  - nuget restore DataRowHelper.sln
   - nuget install NUnit.Runners -OutputDirectory testrunner
 script:
   - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DataRowHelperUnitTest/bin/Debug/DataRowReaderTest.dll
